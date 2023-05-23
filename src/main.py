@@ -5,7 +5,7 @@ from st_aggrid.shared import GridUpdateMode
 import pandas as pd
 import numpy as np
 
-st.write(""" ## Determination of STD NMR Binding Epitopes using the Reduced Dataset Approach from STD factors at 2 saturation times """)
+st.write(""" ### Determination of STD NMR Binding Epitopes using the Reduced Dataset Approach from STD factors at 2 saturation times """)
 
 st.sidebar.header('CSV File Upload Option')
 
@@ -39,8 +39,9 @@ if uploaded_file1 is not None:
 
 else:
     # Create an AgGrid table from a pandas DataFrame
-    #tsat_short_label = st.subheader("Enter the Short Saturation Time Employed, in seconds")
-    tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00)
+    tsat_short_label = st.write("##### Enter the Short Saturation Time Employed, in seconds")
+    #tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00)
+    tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility='hidden')
     d = {'Proton_Name': [""],'STD_short_tsat': [np.nan],'STD_long_tsat': [np.nan]}
     df = pd.DataFrame(data = d)
     # Display the Dataframe in AgGrid
