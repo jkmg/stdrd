@@ -39,7 +39,7 @@ if uploaded_file1 is not None:
 
 else:
     # Create an AgGrid table from a pandas DataFrame
-    tsat_short_label = st.subheader("Enter the Short Saturation Time Employed, in seconds")
+    tsat_short_label = st.text("Enter the Short Saturation Time Employed, in seconds")
     tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility = 'hidden')
     d = {'Proton_Name': [""],'STD_short_tsat': [np.nan],'STD_long_tsat': [np.nan]}
     df = pd.DataFrame(data = d)
@@ -139,7 +139,7 @@ else:
         st.form_submit_button("Confirm item(s) 🔒", type="primary")
 
     # Visualize the AgGrid when submit button triggered           
-    st.subheader("Updated Table")
+    st.subheader("Results")
     # Fetch the data from the AgGrid Table
     res = response['data'] 
     res['STD_long_tsat'] = res['STD_long_tsat'].astype(float)
