@@ -39,9 +39,8 @@ if uploaded_file1 is not None:
 
 else:
     # Create an AgGrid table from a pandas DataFrame
-    tsat_short_label = st.write("##### Enter the Short Saturation Time Employed, in seconds")
-    #tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00)
-    tsat_short = st.number_input("**Enter the Short Saturation Time Employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility='hidden')
+    tsat_short_label = st.write("##### Enter below the Short Saturation Time employed, in seconds")
+    tsat_short = st.number_input("**Enter the Short Saturation Time employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility='hidden')
     d = {'Proton_Name': [""],'STD_short_tsat': [np.nan],'STD_long_tsat': [np.nan]}
     df = pd.DataFrame(data = d)
     # Display the Dataframe in AgGrid
@@ -116,8 +115,8 @@ else:
     # Also helps in providing layout
 
     with st.form('STD NMR Reduced Dataset Approach') as f:
-        st.subheader(""" Complete the table below with your Ligand Proton Names and STD factors :writing_hand: """)
-        
+        #st.subheader(""" Complete the table below with your Ligand Proton Names and STD factors :writing_hand: """)
+        st.write(""" #### :blue[Complete the table below with your Ligand Proton Names and STD Factors] :writing_hand: """)
     # Inside the form, we are displaying an AgGrid table using the AgGrid function. 
     # The allow_unsafe_jscode parameter is set to True, 
     # which allows us to use JavaScript code in the AgGrid configuration
@@ -152,7 +151,7 @@ else:
     st.table(res)
 
     # Function
-    @st.experimental_memo
+    @st.cache_data
     def convert_df(data2): 
         "Converts the data to a CSV format"
         return data2.to_csv(index=False).encode('utf-8')
@@ -171,5 +170,5 @@ else:
 
 if uploaded_file1 is not None:
     st.write(df1)
-else:
-    st.write('Awaiting CSV file to be uploaded')
+#else:
+#    st.write('Awaiting CSV file to be uploaded')
