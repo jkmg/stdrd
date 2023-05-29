@@ -183,7 +183,7 @@ def main_menu():
             df1['Bmax'] = ans1[0]
             df1['Bmax_stdev'] = stdev1[0]
             df1['Kd'] = ans1[1]
-            df1['Kd_stdev'] = stdev1[1]
+            df1['Standard Deviation'] = stdev1[1]
             df1.drop(['Ligand Concentration (µM)','STD at short saturation time (s)', 'STD at long saturation time (s)', 'ksat', 'STD0', 'ratio', 'STD_AF0'], inplace=True, axis=1)
             # Function
             @st.experimental_memo
@@ -308,7 +308,7 @@ def main_menu():
             #res['Bmax'] = ans[0]
             #res['Bmax_stdev'] = stdev[0]
             res['Kd'] = ans[1]
-            res['Kd_stdev'] = stdev[1]
+            res['Standard Deviation'] = stdev[1]
             res.drop_duplicates(subset = ['Kd'], ignore_index=True, inplace=True)
             print(res)
             st.table(res)
