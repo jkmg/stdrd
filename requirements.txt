@@ -7,3 +7,4 @@ python-multipart==0.0.6
 python-utils==3.5.2
 streamlit==1.22.0
 streamlit-aggrid==0.3.4.post3
+scipy==1.9.3
