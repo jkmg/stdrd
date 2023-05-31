@@ -23,7 +23,7 @@ def main_menu():
             df1['Epitope (%)'] = df1.STD0/(np.max(df1.STD0))*100
             df1.drop(['STD at short saturation time (s)', 'STD at long saturation time (s)'], inplace=True, axis=1)
             # Function
-            @st.experimental_memo
+            @st.cache_data
             def convert_df1(data1): 
                 "Converts the data to a CSV format"
                 return data1.to_csv(index=False).encode('utf-8')
@@ -166,35 +166,62 @@ def main_menu():
         # Langmuir isotherm
         def model(x,Bmax,Kd):
             return (Bmax*x/(Kd+x))
+        # Law of Mass Action
+        def model2(x, b, Kd):
+            return b*((x+protconc1+Kd)-np.sqrt(np.square(x+protconc1+Kd)-4*x*protconc1))/2
         if uploaded_file1 is not None:
             df1 = pd.read_csv(uploaded_file1, header = None)
-            df1.columns=['Proton Name', 'STD at short saturation time (s)', 'STD at long saturation time (s)']
+            df1.columns=['Ligand Concentration (µM)', 'STD at short saturation time (s)', 'STD at long saturation time (s)']
             df1['ksat'] = (- np.log((df1['STD at long saturation time (s)'] - df1['STD at short saturation time (s)'])/df1['STD at long saturation time (s)']))/tsat_short1
             df1['STD0'] = df1.ksat*df1['STD at long saturation time (s)']
-            df1['ratio'] = df1['Ligand Concentration (µM)']/protconc
+            df1['ratio'] = df1['Ligand Concentration (µM)']/protconc1
             df1['STD_AF0'] = df1['STD0']*df1['ratio']
+            df2 = df1.copy()
             # Creating the STD build-up curve figure with all curves in one plot
             X1 = pd.DataFrame(df1,columns=["Ligand Concentration (µM)"])
+            X1 = np.ravel(X1)
             Y1 = pd.DataFrame(df1,columns=["STD_AF0"])
-            iso1 = pd.concat([X1,Y1], axis = 1)
+            Y1 = np.ravel(Y1)
             # Curve Fit
             ans1, cov1 = curve_fit(model, X1, Y1, absolute_sigma=False, bounds=[[0,0], [5000,5000]])   
             stdev1 = np.sqrt(np.diag(cov1)) 
-            df1['Bmax'] = ans1[0]
-            df1['Bmax_stdev'] = stdev1[0]
-            df1['Kd'] = ans1[1]
+            
+            #df1['Bmax'] = ans1[0]
+            #df1['Bmax_stdev'] = stdev1[0]
+            df1['Kd Langmuir'] = ans1[1]
             df1['Standard Deviation'] = stdev1[1]
             df1.drop(['Ligand Concentration (µM)','STD at short saturation time (s)', 'STD at long saturation time (s)', 'ksat', 'STD0', 'ratio', 'STD_AF0'], inplace=True, axis=1)
+            df1.drop_duplicates(subset = ['Kd Langmuir'], ignore_index=True, inplace=True)
+            #df2['Bmax'] = ans2[0]
+            #df2['Bmax_stdev'] = stdev2[0]
             # Function
-            @st.experimental_memo
-            def convert_df1(data1): 
+            @st.cache_data
+            def convert_df1(df1): 
                 "Converts the data to a CSV format"
-                return data1.to_csv(index=False).encode('utf-8')
-            st.subheader("Download Results")
+                return df1.to_csv(index=False).encode('utf-8')
+            st.subheader("Download Results from the Langmuir Isotherm")
             col1,col2 = st.columns(2)
-            csv = convert_df1(df1)
-            col1.write("Save locally")
-            col2.download_button("Press to Download Results 🗳️", csv, "file.csv", "text/csv", key='download-csv')
+            csv1 = convert_df1(df1)
+            #col1.write("Save File")
+            col2.download_button("Press to Download the Results using the Langmuir Isotherm 🗳️", csv1, "Kd_Langmuir.csv", "text/csv", key='download-csv1')
+            st.write(df1)
+
+            ans2, cov2 = curve_fit(model2, X1, Y1, absolute_sigma=False, bounds=[[0,0], [5000,5000]]) 
+            stdev2 = np.sqrt(np.diag(cov2)) 
+            df2['Kd Law of Mass'] = ans2[1]
+            df2['Standard Deviation'] = stdev2[1]
+            df2.drop(['Ligand Concentration (µM)','STD at short saturation time (s)', 'STD at long saturation time (s)', 'ksat', 'STD0', 'ratio', 'STD_AF0'], inplace=True, axis=1)
+            df2.drop_duplicates(subset = ['Kd Law of Mass'], ignore_index=True, inplace=True)
+            @st.cache_data
+            def convert_df2(df2): 
+                "Converts the data to a CSV format"
+                return df2.to_csv(index=False).encode('utf-8')
+            st.subheader("Download Results from the Law of Mass Action")
+            col3,col4 = st.columns(2)
+            csv2 = convert_df2(df2)
+            #col3.write("Save")
+            col4.download_button("Press to Download the Results using the Law of Mass Action 🗳️", csv2, "Kd_MassLaw.csv", "text/csv", key='download-csv2')
+            st.write(df2)
         else:
             # Create an AgGrid table from a pandas DataFrame
             tsat_short_label = st.write("##### Enter below the Short Saturation Time employed, in seconds")
@@ -285,7 +312,7 @@ def main_menu():
                 st.write(" *Note: Don't forget to hit enter ↩ on new entry.*")
                 st.form_submit_button("Confirm item(s) 🔒", type="primary")
             # Visualize the AgGrid when submit button triggered           
-            st.subheader("Results")
+            #st.subheader("Results")
             # Fetch the data from the AgGrid Table
             res = response['data'] 
             res['STD at long saturation time (s)'] = res['STD at long saturation time (s)'].astype(float)
@@ -300,30 +327,47 @@ def main_menu():
             Y = pd.DataFrame(res,columns=["STD_AF0"])
             Y = np.ravel(Y)
             # Curve Fit 
-            ans, cov = curve_fit(model, X, Y, absolute_sigma=False, bounds=[[0,0], [5000,5000]])  
-            print(ans)
-            print(cov)  
-            stdev = np.sqrt(np.diag(cov)) 
+            ans1, cov1 = curve_fit(model, X, Y, absolute_sigma=False, bounds=[[0,0], [5000,5000]])  
+            stdev1 = np.sqrt(np.diag(cov1)) 
             res.drop(['Ligand Concentration (µM)','STD at short saturation time (s)', 'STD at long saturation time (s)', 'ksat', 'STD0', 'ratio', 'STD_AF0'], inplace=True, axis=1)
             #res['Bmax'] = ans[0]
             #res['Bmax_stdev'] = stdev[0]
-            res['Kd'] = ans[1]
-            res['Standard Deviation'] = stdev[1]
-            res.drop_duplicates(subset = ['Kd'], ignore_index=True, inplace=True)
-            print(res)
-            st.table(res)
+            res['Kd Langmuir'] = ans1[1]
+            res['Standard Deviation'] = stdev1[1]
+            res.drop_duplicates(subset = ['Kd Langmuir'], ignore_index=True, inplace=True)
+            #st.table(res)
             # Function
             @st.cache_data
-            def convert_df(data2): 
+            def convert_df1(res): 
                 "Converts the data to a CSV format"
-                return data2.to_csv(index=False).encode('utf-8')
-            st.subheader("Download Results")
+                return res.to_csv(index=False).encode('utf-8')
+            st.subheader("Download Results from the Langmuir Isotherm")
             col1,col2 = st.columns(2)
-            csv = convert_df(response['data'])
-            col1.write("Save locally")
-            col2.download_button("Press to Download Results 🗳️", csv, "file.csv", "text/csv", key='download-csv')
-        if uploaded_file1 is not None:
-            st.write(df1)
+            csv1 = convert_df1(res)
+            #col1.write("Save File")
+            col2.download_button("Press to Download the Results using the Langmuir Isotherm 🗳️", csv1, "Kd_Langmuir.csv", "text/csv", key='download-csv1i')
+            st.write(res)
+
+            ans2, cov2 = curve_fit(model2, X, Y, absolute_sigma=False, bounds=[[0,0], [5000,5000]]) 
+            stdev2 = np.sqrt(np.diag(cov2)) 
+            d = {'Kd Law of Mass': [ans2[1]],'Standard Deviation': [stdev2[1]]}
+            res2 = pd.DataFrame(data=d)
+            #df2['Kd Law of Mass'] = ans2[1]
+            #df2['Standard Deviation'] = stdev2[1]
+            #res2.drop(['Ligand Concentration (µM)','STD at short saturation time (s)', 'STD at long saturation time (s)', 'ksat', 'STD0', 'ratio', 'STD_AF0'], inplace=True, axis=1)
+            res2.drop_duplicates(subset = ['Kd Law of Mass'], ignore_index=True, inplace=True)
+            @st.cache_data
+            def convert_df2(res2): 
+                "Converts the data to a CSV format"
+                return res2.to_csv(index=False).encode('utf-8')
+            st.subheader("Download Results from the Law of Mass Action")
+            col3,col4 = st.columns(2)
+            csv2 = convert_df2(res2)
+            #col3.write("Save")
+            col4.download_button("Press to Download the Results using the Law of Mass Action 🗳️", csv2, "Kd_MassLaw.csv", "text/csv", key='download-csv2i')
+            st.write(res2)
+        #if uploaded_file1 is not None:
+        #    st.write(df1)
 
 if __name__ == '__main__':
     main_menu()
