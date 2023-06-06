@@ -1,5 +1,5 @@
 Markdown==3.4.3
-markdown-it-py==2.1.0
+markdown-it-py==2.2.0
 numpy==1.23.0
 pandas==1.5.1
 python-decouple==3.8
