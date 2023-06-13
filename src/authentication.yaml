@@ -1,0 +1,23 @@
+credentials:
+  usernames:
+    admin:
+      email: jcmguga@gmail.com
+      name: admin
+      password: $2b$12$8rjl6uC.E20OrCO5AFRS2Oju4/FaUodmVOxtLiGrn1z.61KNn7NYe  # To be replaced with hashed password
+    gabriel:
+      email: gabriel.rocha@iiq.csic.es
+      name: gabriel
+      password: $2b$12$nCOFPnGfPi2As/vQy7iqCeguPwcnqXzGGmOvpDxoJqDnHw3/sf/d6  # To be replaced with hashed password
+    jona:
+      email: jonathan.ramirez@iiq.csic.es
+      name: jona
+      password: $2b$12$wysz4vZmqPHikRjRZ3eu/utLCNu1UKfDqZZ5Mb6e56KHVxX6vvOMO
+    jesus:
+      email: j.angulo@iiq.csic.es
+      name: jesus
+      password: $2b$12$uZICY0hR04V4xrglQHoGau70UnIbO1sw0639Q0ic5wCxPtF6WZjBm
+  
+cookie:
+  expiry_days: 0
+  key: some_signature_key # Must be string
+  name: reduced_dataset_2023
