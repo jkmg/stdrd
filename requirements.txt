@@ -8,4 +8,4 @@ python-utils==3.5.2
 streamlit==1.23.1
 streamlit-aggrid==0.3.4.post3
 streamlit_authenticator==0.2.2
-scipy==1.9.3
+scipy==1.10.0
