@@ -9,7 +9,7 @@ import numpy as np
 import yaml
 from yaml.loader import SafeLoader
 
-with open('/mount/src/stdrd/src/authentication.yaml') as file:
+with open('/mount/src/stdrd/src/no_authentication.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
@@ -22,7 +22,7 @@ authenticator = stauth.Authenticate(
 
 name, authentication_status, username = authenticator.login('Login', 'main')
 
-if authentication_status:
+if not authentication_status:
     authenticator.logout('Logout', 'main', key='stdrd')
     st.write(f'Welcome *{name}*')
     #st.title('Some content')
