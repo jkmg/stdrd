@@ -5,7 +5,7 @@ pandas==1.5.1
 python-decouple==3.8
 python-multipart==0.0.6
 python-utils==3.5.2
-streamlit==1.23.1
+streamlit==1.30.0
 streamlit-aggrid==0.3.4.post3
 streamlit_authenticator==0.2.2
 scipy==1.9.3
