@@ -45,7 +45,7 @@ def main_menu():
         else:
             # Create an AgGrid table from a pandas DataFrame
             tsat_short_label = st.write("##### Enter below the Short Saturation Time employed, in seconds")
-            tsat_short = st.number_input("**Enter the Short Saturation Time employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility='hidden')
+            tsat_short = st.number_input("**Enter the Short Saturation Time employed, in seconds**", value = 0.75, min_value=0.10, max_value=1.50, label_visibility='hidden')
             d = {'Proton Name': ["H1", "H2", "H3", "H4", "H5"],'STD at short saturation time (s)': [1.7,4.3,4.8,3.7,3.8],'STD at long saturation time (s)': [4.8,14.3,12.2,7.0,7.1]}
             df = pd.DataFrame(data = d)
             # Display the Dataframe in AgGrid
@@ -165,7 +165,7 @@ def main_menu():
         st.sidebar.header('CSV File Upload Option')
         # Collects user input features into dataframe
         uploaded_file1 = st.sidebar.file_uploader("**You can also upload a CSV File (without column headers) containing 3 columns, the first with the ligand concentrations (in µM), then the experimental STD factors at short (typically 0.5, 0.75 or 1 s; 0.75 s is recommended) and large (typically 6 or 8 s) saturation times**", type=["csv"])
-        tsat_short1 = st.sidebar.number_input("**Enter the Short Saturation Time, in seconds**", value = 0.75, min_value=0.50, max_value=1.00)
+        tsat_short1 = st.sidebar.number_input("**Enter the Short Saturation Time, in seconds**", value = 0.75, min_value=0.10, max_value=1.50)
         protconc1 = st.sidebar.number_input("**Enter the Total Protein Concentration, in µM**", value = 20)
         # Langmuir isotherm
         def model(x,Bmax,Kd):
