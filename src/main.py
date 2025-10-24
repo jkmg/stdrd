@@ -18,7 +18,7 @@ def main_menu():
         st.sidebar.header('CSV File Upload Option')
         # Collects user input features into dataframe
         uploaded_file1 = st.sidebar.file_uploader("**You can also upload a CSV File (without column headers) containing 3 columns, the first with the proton names, then the experimental STD factors at short (typically 0.5, 0.75 or 1 s; 0.75 s is recommended) and large (typically 6 or 8 s) saturation times**", type=["csv"])
-        tsat_short1 = st.sidebar.number_input("**Enter the Short Saturation Time, in seconds**", value = 0.75, min_value=0.50, max_value=1.00)
+        tsat_short1 = st.sidebar.number_input("**Enter the Short Saturation Time, in seconds**", value = 0.75, min_value=0.1, max_value=1.5)
         if uploaded_file1 is not None:
             df1 = pd.read_csv(uploaded_file1, header = None)
             df1.columns=['Proton Name', 'STD at short saturation time (s)', 'STD at long saturation time (s)']
