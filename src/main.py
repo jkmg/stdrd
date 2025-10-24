@@ -229,7 +229,7 @@ def main_menu():
         else:
             # Create an AgGrid table from a pandas DataFrame
             tsat_short_label = st.write("##### Enter below the Short Saturation Time employed, in seconds")
-            tsat_short = st.number_input("**Enter the Short Saturation Time employed, in seconds**", value = 0.75, min_value=0.50, max_value=1.00, label_visibility='hidden')
+            tsat_short = st.number_input("**Enter the Short Saturation Time employed, in seconds**", value = 0.75, min_value=0.1, max_value=1.50, label_visibility='hidden')
             protconc_label = st.write("##### Enter the Total Protein Concentration, in µM")
             protconc = st.number_input("**Enter the Total Protein Concentration (in µM)**", value = 20, label_visibility='hidden')
             d = {'Ligand Concentration (µM)': [150,300,600,1500,2500,4000], 'STD at short saturation time (s)': [37,27,16,9,6,4],'STD at long saturation time (s)': [59,50,39,26,19,14]}
