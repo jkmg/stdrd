@@ -3,7 +3,7 @@ markdown-it-py==2.2.0
 numpy==1.23.0
 pandas==1.5.1
 python-decouple==3.8
-python-multipart==0.0.6
+python-multipart==0.0.7
 python-utils==3.5.2
 streamlit==1.23.1
 streamlit-aggrid==0.3.4.post3
