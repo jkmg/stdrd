@@ -1,21 +1,11 @@
-# --- Core Framework ---
-streamlit==1.37.0
-watchdog
-
-# --- Data Science Stack ---
-# Updated for better compatibility with Python 3.10+
+Markdown==3.4.3
+markdown-it-py==2.2.0
 numpy==1.24.3
-pandas==1.5.3
-scipy==1.10.1
-
-# --- Streamlit Components ---
-# Upgraded authenticator to fix the "infinite hang" cookie bug
-streamlit-authenticator==0.3.2
-streamlit-aggrid==0.3.4.post3
-
-# --- Utilities & Markdown ---
+pandas==1.5.1
 python-decouple==3.8
 python-multipart==0.0.22
 python-utils==3.5.2
-Markdown==3.4.3
-markdown-it-py==2.2.0
+streamlit==1.37.0
+streamlit-aggrid==1.0.5          # Actualizado para soportar Streamlit 1.37
+streamlit-authenticator==0.3.3   # Actualizado para evitar bucles de sesión
+scipy==1.9.3
