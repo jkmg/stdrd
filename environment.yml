@@ -4,9 +4,9 @@ channels:
   - defaults
 dependencies:
   - python=3.10  # Recomendado para compatibilidad con estas versiones
-  - numpy=1.24.3
-  - pandas=1.5.1
-  - scipy=1.9.3
+  - numpy>=1.24.3
+  - pandas>=1.5.1
+  - scipy>=1.10.0
   - pip
   - pip:
     - streamlit==1.37.0
@@ -17,4 +17,4 @@ dependencies:
     - python-decouple==3.8
     - python-multipart==0.0.22
     - python-utils==3.5.2
-    - plotly==5.17.0  # <--- NUEVA DEPENDENCIA PARA LOS GRÁFICOS
+    - plotly>=5.17.0  # <--- NUEVA DEPENDENCIA PARA LOS GRÁFICOS
